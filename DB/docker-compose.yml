@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  my-sql:
+    image: mysql:8.0
+    container_name: my-sql
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: AtDevOPS
+      MYSQL_USER: sa
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "--host=127.0.0.1", "--user=sa", "--password=password" ]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+
+  produto-service:
+    image: rafaelloureioc/produto-service:latest
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://my-sql:3306/AtDevOPS
+      - SPRING_DATASOURCE_USERNAME=sa
+      - SPRING_DATASOURCE_PASSWORD=password
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    depends_on:
+      my-sql:
+        condition: service_healthy
+
+
+  pedido-service:
+    image: rafaelloureioc/pedido-service:latest
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://my-sql:3306/AtDevOPS
+      - SPRING_DATASOURCE_USERNAME=sa
+      - SPRING_DATASOURCE_PASSWORD=password
+    ports:
+      - "8081:8081"
+    networks:
+      - app-network
+    depends_on:
+      my-sql:
+        condition: service_healthy
+
+networks:
+  app-network:
+    driver: bridge
+
+
+volumes:
+  mysql-data:

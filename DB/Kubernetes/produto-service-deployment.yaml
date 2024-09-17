@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: produto-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: produto-service
+  template:
+    metadata:
+      labels:
+        app: produto-service
+    spec:
+      containers:
+        - name: produto-service
+          image: rafaelloureioc/produto-service:latest
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:mysql://my-sql:3306/AtDevOPS"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "sa"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "password"
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: produto-service
+spec:
+  selector:
+    app: produto-service
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: LoadBalancer

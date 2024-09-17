@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-sql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-sql
+  template:
+    metadata:
+      labels:
+        app: my-sql
+    spec:
+      containers:
+        - name: my-sql
+          image: mysql:8.0
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "root_password"
+            - name: MYSQL_DATABASE
+              value: "AtDevOPS"
+            - name: MYSQL_USER
+              value: "sa"
+            - name: MYSQL_PASSWORD
+              value: "password"
+          ports:
+            - containerPort: 3306
+          livenessProbe:
+            exec:
+              command: ["mysqladmin", "ping", "--host=127.0.0.1", "--user=sa", "--password=password"]
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          volumeMounts:
+            - name: mysql-data
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-data
+          persistentVolumeClaim:
+            claimName: mysql-pvc
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-sql
+spec:
+  ports:
+    - port: 3306
+      targetPort: 3306
+  selector:
+    app: my-sql
+  clusterIP: None
