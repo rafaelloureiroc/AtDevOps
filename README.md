@@ -14,3 +14,22 @@ Localmente (Docker):
 
 Minikube (Ambiente Simulado de Produção):
 
+1) Não é necessario alterar nenhuma url e configuração no application properties, após dar um git clone, basta seguir os passos abaixo
+
+2) Istalar minikube, a instalação pode ser via chocolatey (execute o comando Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1')) no POWERSHELL ) e após isso, execute choco install minikube para instalar o minikube e choco install kubernetes-cli para instalar o cluster kubernetes
+   
+3) Executar minikube start no terminal da IDE, por exemplo
+   
+4) Execute os 3 comandos abaixo para dar apply no kubernetes:
+- kubectl apply -f pedido-service-deployment.yaml
+- kubectl apply -f produto-service-deployment.yaml
+- kubectl apply -f mysql-deployment.yaml
+  
+
+5) Verifique se os deployments foram feitos com sucesso com: minikube dashboard
+ 
+6) Por fim, execute os comandos para criar um túnel entre a máquina que está simulando o ambiente de produção e o serviço no cluster Kubernetes:
+- kubectl port-forward svc/pedido-service 8081:8081
+- kubectl port-forward svc/produto-service 8080:8080
+
+7)Execute as chamados da mesmo forma que localmente, através do localhost e as aplicações estarão deployadas e funcionais no kubernetes!
