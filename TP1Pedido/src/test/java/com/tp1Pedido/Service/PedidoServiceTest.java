@@ -74,10 +74,10 @@ public void criarPedido_EstoqueInsuficiente() {
 public void criarPedido_DinheiroInsuficiente() {
     Long produtoId = 1L;
     int quantidade = 5;
-    double dinheiro = 30.0;
+    double dinheiro = 10.0;
     ProdutoDTO produto = new ProdutoDTO();
     produto.setId(produtoId);
-    produto.setQuantidade(10);
+    produto.setQuantidade(5);
     produto.setPreco(10.0);
 
     when(estoqueClient.getProduto(produtoId)).thenReturn(produto);
