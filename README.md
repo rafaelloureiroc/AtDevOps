@@ -22,12 +22,11 @@ Minikube (Ambiente Simulado de Produção):
    
 3) Executar minikube start no terminal da IDE, por exemplo
    
-4) Execute os 3 comandos abaixo para dar apply no kubernetes:
+4) Digite cd DB, Cd Kubernetes e Execute os 3 comandos abaixo para dar apply no kubernetes:
    - kubectl apply -f pedido-service-at-deployment.yaml
    - kubectl apply -f produto-service-deployment.yaml
    - kubectl apply -f mysql-deployment.yaml
   
-
 5) Verifique se os deployments foram feitos com sucesso com: minikube dashboard
  
 6) Por fim, execute os comandos para criar um túnel entre a máquina que está simulando o ambiente de produção e o serviço no cluster Kubernetes:
