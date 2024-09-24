@@ -6,8 +6,9 @@ Docker:
 
 1) Realize o git clone em sua maquina
 2) Abra o projeto em sua IDE, seja ela Eclipse ou Intellij
-3) Navegue até o diretorio do microsserviço DB e execute o seguinte comando: docker-compose up --build, em caso de erro ou restart, utilize docker compose down 
-4) Ajuste os arquivos Application.properties localizados em src/main/resources e altere
+3) Navegue até o diretorio do microsserviço DB e execute o seguinte comando: docker-compose up --build (em caso de erro ou restart, utilize docker compose down)
+4) (Não é necessário utilizar os servicos pedido-service-1 e produto-service-1 para rodar localmente em sua IDE, eles podem ser parados no docker)
+5) Ajuste os arquivos Application.properties localizados em src/main/resources e altere
   - spring.datasource.url=jdbc:mysql://my-sql:3306/AtDevOPS
   - PARA
   - spring.datasource.url=jdbc:mysql://localhost:3306/AtDevOPS com intuito de conectar-se ao banco de dados no container
